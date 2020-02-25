@@ -19,18 +19,9 @@ namespace myTiles {
 . . . . . . . . . . . . . . . . 
 `
 }
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
-    game.over(false)
-})
-controller.anyButton.onEvent(ControllerButtonEvent.Pressed, function () {
-    mySprite.vy = -100
-})
-let projectile: Sprite = null
-let bottomImage: Image = null
-let topImage: Image = null
-let gap = 0
-let mySprite: Sprite = null
-mySprite = sprites.create(img`
+// the sprite
+function sprite () {
+    mySprite = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . 7 7 7 7 7 7 7 7 . . . . 
 . . 7 7 7 7 7 7 7 7 7 7 7 7 . . 
@@ -48,8 +39,23 @@ mySprite = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Player)
-mySprite.ay = 300
-mySprite.setPosition(10, 50)
+    mySprite.ay = 300
+    mySprite.setPosition(10, 50)
+}
+// kills sprite
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite2, otherSprite) {
+    game.over(false)
+})
+controller.anyButton.onEvent(ControllerButtonEvent.Pressed, function () {
+    mySprite.vy = -100
+})
+let projectile: Sprite = null
+let bottomImage: Image = null
+let topImage: Image = null
+let gap = 0
+let mySprite: Sprite = null
+sprite()
+// the obstacles
 game.onUpdateInterval(1500, function () {
     info.changeScoreBy(1)
     gap = Math.randomRange(0, 3)
@@ -415,6 +421,7 @@ game.onUpdateInterval(1500, function () {
     projectile = sprites.createProjectileFromSide(bottomImage, -45, 0)
     projectile.bottom = scene.screenHeight()
 })
+// keeps sprite in screen
 game.onUpdate(function () {
     if (mySprite.bottom > 120 || mySprite.top < 0) {
         game.over(false)
